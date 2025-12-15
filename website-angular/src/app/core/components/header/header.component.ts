@@ -10,7 +10,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class HeaderComponent {
 title() {
 // throw new Error('Method not implemented.');
-  return 'SAM Salon & Spa';
+  return 'Sam\'s Salon and Face care';
 }
   isMobileMenuOpen = false;
 

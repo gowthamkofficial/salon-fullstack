@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HeroComponent } from './components/hero/hero';
-import { Appointments } from './components/appointments/appointments';
 import { Products } from './components/products/products';
 import { ServicesComponent } from './components/services/services';
 import { Staff } from './components/staff/staff';
+import { Appointments } from './components/appointments/appointments';
 
 const routes: Routes = [
   {

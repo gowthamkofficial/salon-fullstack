@@ -23,7 +23,7 @@ export class Staff {
   staffMembers: StaffMember[] = [
     { 
       id: 1, 
-      name: 'Saravanan K', 
+      name: 'Sam\'s Salon and Face care', 
       role: 'Head Stylist & Owner', 
       experience: '15+ years', 
       specialties: ['Hair Cutting', 'Hair Coloring', 'Styling'], 

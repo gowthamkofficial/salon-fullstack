@@ -1,6 +1,6 @@
 # 💇‍♂️ Salon Fullstack – Professional Salon Website
 
-A modern, mobile-first salon website built using **Angular (latest version with SSR)** and **Tailwind CSS**, designed for **Saravanan K’s Salon**, located at **Vikkiramangalam Bus Stand, Usilampatti, Madurai – 625207**.
+A modern, mobile-first salon website built using **Angular (latest version with SSR)** and **Tailwind CSS**, designed for **Sam's Salon and Face care’s Salon**, located at **Vikkiramangalam Bus Stand, Usilampatti, Madurai – 625207**.
 
 This project focuses on **clean UI/UX, scalability, and real-world architecture**, making it production-ready and easy to extend with backend APIs in the future.
 

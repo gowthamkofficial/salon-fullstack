@@ -1,87 +1,185 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-interface TimeSlot {
-  time: string;
-  available: boolean;
-  bookedBy?: string;
-}
-
-interface Appointment {
+interface QueueCustomer {
   id: number;
-  customerName: string;
+  queueNumber: string;
+  name: string;
+  phone: string;
   service: string;
+  duration: string;
   staff: string;
-  date: string;
-  time: string;
-  status: 'confirmed' | 'pending' | 'completed';
+  staffRole: string;
+  arrivalTime: string;
+  waitingTime: string;
+  estimatedTime: string;
+  estimatedDuration: string;
+  status: 'waiting' | 'in-progress' | 'completed';
+  completedTime?: string;
 }
 
 @Component({
-  selector: 'app-appointments',
+  selector: 'app-salon-queue',
   templateUrl: './appointments.html',
   styleUrls: ['./appointments.scss'],
   standalone: false
 })
-export class Appointments {
-  // API Integration Point: These data will be fetched from backend
-  timeSlots: TimeSlot[] = [
-    { time: '9:00 AM', available: false, bookedBy: 'Ramesh K' },
-    { time: '10:00 AM', available: false, bookedBy: 'Priya S' },
-    { time: '11:00 AM', available: true },
-    { time: '12:00 PM', available: true },
-    { time: '1:00 PM', available: false, bookedBy: 'Lunch Break' },
-    { time: '2:00 PM', available: true },
-    { time: '3:00 PM', available: false, bookedBy: 'Suresh M' },
-    { time: '4:00 PM', available: true },
-    { time: '5:00 PM', available: true },
-    { time: '6:00 PM', available: false, bookedBy: 'Anitha R' },
-    { time: '7:00 PM', available: true }
-  ];
+export class Appointments implements OnInit {
+  queueCustomers: QueueCustomer[] = [];
+  completedToday = 8;
+  currentTime = new Date();
 
-  appointmentTypes = [
-    { id: 1, name: 'Haircut', duration: '45 mins' },
-    { id: 2, name: 'Hair Color', duration: '2 hours' },
-    { id: 3, name: 'Facial', duration: '1 hour' },
-    { id: 4, name: 'Manicure', duration: '45 mins' }
-  ];
+  ngOnInit() {
+    this.loadQueueData();
+    // Update time every minute
+    setInterval(() => {
+      this.currentTime = new Date();
+      this.updateWaitingTimes();
+    }, 60000);
+  }
 
-  // Mock appointments data
-  appointments: Appointment[] = [
-    { id: 1, customerName: 'Ramesh K', service: 'Haircut & Styling', staff: 'Saravanan K', date: '2024-01-15', time: '9:00 AM', status: 'confirmed' },
-    { id: 2, customerName: 'Priya S', service: 'Hair Coloring', staff: 'Saravanan K', date: '2024-01-15', time: '10:00 AM', status: 'confirmed' },
-    { id: 3, customerName: 'Suresh M', service: 'Men\'s Grooming', staff: 'Arun Kumar', date: '2024-01-15', time: '3:00 PM', status: 'pending' },
-    { id: 4, customerName: 'Anitha R', service: 'Facial', staff: 'Priya S', date: '2024-01-15', time: '6:00 PM', status: 'confirmed' }
-  ];
+  loadQueueData() {
+    // Mock data - In real app, this would come from API
+    this.queueCustomers = [
+      {
+        id: 1,
+        queueNumber: 'SQ-001',
+        name: 'Priya Sharma',
+        phone: '+91 98765 43210',
+        service: 'Haircut & Styling',
+        duration: '45 mins',
+        staff: 'Sam\'s Salon and Face care',
+        staffRole: 'Head Stylist',
+        arrivalTime: '10:15 AM',
+        waitingTime: '25 mins',
+        estimatedTime: '11:30 AM',
+        estimatedDuration: '15 mins',
+        status: 'in-progress'
+      },
+      {
+        id: 2,
+        queueNumber: 'SQ-002',
+        name: 'Rahul Verma',
+        phone: '+91 87654 32109',
+        service: 'Beard Trim',
+        duration: '20 mins',
+        staff: 'Arun Kumar',
+        staffRole: 'Men\'s Grooming',
+        arrivalTime: '10:30 AM',
+        waitingTime: '10 mins',
+        estimatedTime: '11:45 AM',
+        estimatedDuration: '45 mins',
+        status: 'waiting'
+      },
+      {
+        id: 3,
+        queueNumber: 'SQ-003',
+        name: 'Anjali Patel',
+        phone: '+91 76543 21098',
+        service: 'Hair Coloring',
+        duration: '2 hours',
+        staff: 'Sam\'s Salon and Face care',
+        staffRole: 'Head Stylist',
+        arrivalTime: '10:45 AM',
+        waitingTime: '5 mins',
+        estimatedTime: '12:15 PM',
+        estimatedDuration: '1.5 hours',
+        status: 'waiting'
+      },
+      {
+        id: 4,
+        queueNumber: 'SQ-004',
+        name: 'Suresh Kumar',
+        phone: '+91 65432 10987',
+        service: 'Facial',
+        duration: '1 hour',
+        staff: 'Priya S',
+        staffRole: 'Beauty Therapist',
+        arrivalTime: '11:00 AM',
+        waitingTime: 'Just arrived',
+        estimatedTime: '1:00 PM',
+        estimatedDuration: '2 hours',
+        status: 'waiting'
+      },
+      {
+        id: 5,
+        queueNumber: 'SQ-005',
+        name: 'Meena Raj',
+        phone: '+91 54321 09876',
+        service: 'Manicure & Pedicure',
+        duration: '1.5 hours',
+        staff: 'Priya S',
+        staffRole: 'Beauty Therapist',
+        arrivalTime: '10:50 AM',
+        waitingTime: '20 mins',
+        estimatedTime: '2:00 PM',
+        estimatedDuration: '3 hours',
+        status: 'completed',
+        completedTime: '11:10 AM'
+      }
+    ];
+  }
 
-  selectedDate: string = '2024-01-15';
-  selectedService: string = '';
-  selectedStaff: string = '';
-  customerName: string = '';
-  customerPhone: string = '';
-availableSlots: any;
+  getTotalWaiting(): number {
+    return this.queueCustomers.filter(c => c.status === 'waiting').length;
+  }
 
-  bookAppointment(timeSlot: TimeSlot): void {
-    if (timeSlot.available) {
-      // API Integration Point: This will send booking request to backend
-      console.log('Booking appointment for:', timeSlot.time);
-      console.log('Customer:', this.customerName);
-      console.log('Service:', this.selectedService);
-      console.log('Staff:', this.selectedStaff);
-      
-      // Reset form
-      this.customerName = '';
-      this.customerPhone = '';
-      this.selectedService = '';
-      this.selectedStaff = '';
+  getInProgressCount(): number {
+    return this.queueCustomers.filter(c => c.status === 'in-progress').length;
+  }
+
+  getNextAvailableSlot(): string {
+    const waiting = this.queueCustomers.filter(c => c.status === 'waiting');
+    return waiting.length > 0 ? waiting[0].estimatedTime : 'Now';
+  }
+
+  getRowClass(status: string): string {
+    switch(status) {
+      case 'in-progress': return 'bg-blue-50';
+      case 'completed': return 'bg-green-50 opacity-75';
+      default: return '';
     }
   }
 
-  getStatusColor(status: string): string {
+  getQueueNumberClass(status: string): string {
     switch(status) {
-      case 'confirmed': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'completed': return 'bg-blue-100 text-blue-800';
+      case 'in-progress': return 'bg-blue-600';
+      case 'waiting': return 'bg-yellow-600';
+      case 'completed': return 'bg-green-600';
+      default: return 'bg-gray-600';
+    }
+  }
+
+  getStatusBadgeClass(status: string): string {
+    switch(status) {
+      case 'waiting': return 'bg-yellow-100 text-yellow-800';
+      case 'in-progress': return 'bg-blue-100 text-blue-800';
+      case 'completed': return 'bg-green-100 text-green-800';
       default: return 'bg-gray-100 text-gray-800';
     }
+  }
+
+  getInitials(name: string): string {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  }
+
+  getCurrentlyServing(): QueueCustomer | null {
+    return this.queueCustomers.find(c => c.status === 'in-progress') || null;
+  }
+
+  getNextInLine(): QueueCustomer[] {
+    return this.queueCustomers.filter(c => c.status === 'waiting').slice(0, 2);
+  }
+
+  getRecentlyCompleted(): QueueCustomer[] {
+    return this.queueCustomers.filter(c => c.status === 'completed').slice(0, 2);
+  }
+
+  updateWaitingTimes() {
+    // Update waiting times logic (simplified)
+    this.queueCustomers.forEach(customer => {
+      if (customer.status === 'waiting') {
+        // In real app, calculate actual waiting time
+      }
+    });
   }
 }
