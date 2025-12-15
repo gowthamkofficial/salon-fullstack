@@ -1,0 +1,159 @@
+<section class="py-16 bg-gray-50">
+  <div class="container px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Book Your Appointment</h1>
+      <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+        Check real-time availability and book your slot instantly. Receive instant confirmation via SMS.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Booking Form -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Select Date & Time</h2>
+          
+          <!-- Date Selection -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Select Date</label>
+            <input 
+              type="date" 
+              [(ngModel)]="selectedDate"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            >
+          </div>
+
+          <!-- Time Slots Grid -->
+          <div class="mb-8">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Available Time Slots</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              <div 
+                *ngFor="let slot of timeSlots" 
+                (click)="bookAppointment(slot)"
+                [class]="slot.available 
+                  ? 'cursor-pointer border-2 border-green-500 hover:bg-green-50' 
+                  : 'cursor-not-allowed border-2 border-red-300 bg-red-50'"
+                class="p-4 text-center rounded-lg transition-colors duration-300"
+              >
+                <p class="font-medium text-gray-900">{{ slot.time }}</p>
+                <p [class]="slot.available ? 'text-green-600 text-sm' : 'text-red-600 text-sm'">
+                  {{ slot.available ? 'Available' : 'Booked' }}
+                </p>
+                <p *ngIf="slot.bookedBy" class="text-xs text-gray-500 mt-1">{{ slot.bookedBy }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Service Selection -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Select Service</label>
+            <select 
+              [(ngModel)]="selectedService"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            >
+              <option value="">Choose a service</option>
+              <option *ngFor="let service of appointmentTypes" [value]="service.name">
+                {{ service.name }} ({{ service.duration }})
+              </option>
+            </select>
+          </div>
+
+          <!-- Staff Selection -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Staff (Optional)</label>
+            <select 
+              [(ngModel)]="selectedStaff"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            >
+              <option value="">Any available staff</option>
+              <option value="Saravanan K">Saravanan K (Head Stylist)</option>
+              <option value="Priya S">Priya S (Beauty Therapist)</option>
+              <option value="Arun Kumar">Arun Kumar (Men's Grooming)</option>
+            </select>
+          </div>
+
+          <!-- Customer Details -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Your Name</label>
+              <input 
+                type="text" 
+                [(ngModel)]="customerName"
+                placeholder="Enter your name"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+              <input 
+                type="tel" 
+                [(ngModel)]="customerPhone"
+                placeholder="Enter your phone number"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+              >
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button 
+            class="btn-primary w-full py-3 text-lg"
+            (click)="bookAppointment({time: 'Selected', available: true})"
+          >
+            Confirm Booking
+          </button>
+        </div>
+      </div>
+
+      <!-- Today's Appointments -->
+      <div>
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Today's Appointments</h2>
+          
+          <div class="space-y-4">
+            <div *ngFor="let appointment of appointments" class="border border-gray-200 rounded-lg p-4">
+              <div class="flex justify-between items-start mb-2">
+                <div>
+                  <h3 class="font-semibold text-gray-900">{{ appointment.customerName }}</h3>
+                  <p class="text-sm text-gray-600">{{ appointment.service }}</p>
+                </div>
+                <span 
+                  class="px-2 py-1 text-xs font-semibold rounded-full"
+                  [class]="getStatusColor(appointment.status)"
+                >
+                  {{ appointment.status }}
+                </span>
+              </div>
+              <div class="text-sm text-gray-600">
+                <p>Time: {{ appointment.time }}</p>
+                <p>Staff: {{ appointment.staff }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="mt-8 pt-6 border-t border-gray-200">
+            <div class="grid grid-cols-2 gap-4">
+              <div class="text-center">
+                <p class="text-2xl font-bold text-red-600">{{ availableSlots }}</p>
+                <p class="text-sm text-gray-600">Available Slots</p>
+              </div>
+              <div class="text-center">
+                <p class="text-2xl font-bold text-green-600">{{ appointments.length }}</p>
+                <p class="text-sm text-gray-600">Booked Today</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- API Integration Note -->
+          <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+            <p class="text-blue-800 text-sm">
+              <span class="font-semibold">API Integration Point:</span> 
+              Real-time appointment booking and availability updates will be managed through backend API.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
