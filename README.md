@@ -67,28 +67,3 @@ An **admin interface** is included to manage:
 
 ---
 
-## 🗂️ Project Architecture
-
-src/app/
-│
-├── core/
-│ ├── components/ # Header, Footer
-│ ├── hero/
-│ ├── services/
-│ ├── products/
-│ ├── staff/
-│ └── appointments/
-│ └── services/ # Global singleton services
-│
-├── shared/
-│ ├── components/ # Reusable UI components
-│ ├── directives/
-│ └── pipes/
-│
-├── admin/
-│ └── appointments/ # Admin appointment management
-│
-├── models/ # Interfaces & DTOs
-│
-└── app-routing.module.ts
-
