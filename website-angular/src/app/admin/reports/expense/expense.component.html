@@ -1,0 +1,21 @@
+<div class="admin-expense-container">
+  <h2>Expense Report</h2>
+  <div class="expense-table-wrapper">
+    <table class="expense-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of expenses">
+          <td>{{ e.date }}</td>
+          <td>{{ e.amount | currency }}</td>
+          <td>{{ e.category }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

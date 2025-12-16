@@ -1,0 +1,55 @@
+<div class="admin-layout">
+  <aside class="admin-sidebar" [class.open]="sidebarOpen">
+    <div class="sidebar-header">
+      <h3>Admin Panel</h3>
+      <button class="close-btn" (click)="closeSidebar()">×</button>
+    </div>
+    <nav class="sidebar-nav">
+      <a routerLink="/admin/dashboard" routerLinkActive="active" (click)="closeSidebar()">
+        <span class="icon">📊</span> Dashboard
+      </a>
+      <a routerLink="/admin/settings" routerLinkActive="active" (click)="closeSidebar()">
+        <span class="icon">⚙️</span> Settings
+      </a>
+      <a routerLink="/admin/services" routerLinkActive="active" (click)="closeSidebar()">
+        <span class="icon">✂️</span> Services
+      </a>
+      <a routerLink="/admin/products" routerLinkActive="active" (click)="closeSidebar()">
+        <span class="icon">🛍️</span> Products
+      </a>
+      <a routerLink="/admin/staff" routerLinkActive="active" (click)="closeSidebar()">
+        <span class="icon">👥</span> Staff
+      </a>
+      <a routerLink="/admin/appointments" routerLinkActive="active" (click)="closeSidebar()">
+        <span class="icon">📅</span> Appointments
+      </a>
+      <div class="nav-divider"></div>
+      <a routerLink="/admin/reports/income" routerLinkActive="active" (click)="closeSidebar()">
+        <span class="icon">💰</span> Income Report
+      </a>
+      <a routerLink="/admin/reports/expense" routerLinkActive="active" (click)="closeSidebar()">
+        <span class="icon">💸</span> Expense Report
+      </a>
+      <div class="nav-divider"></div>
+      <a href="/" (click)="closeSidebar()">
+        <span class="icon">🔙</span> Back to Site
+      </a>
+      <button class="logout-btn">Logout</button>
+    </nav>
+  </aside>
+
+  <div class="admin-overlay" *ngIf="sidebarOpen" (click)="closeSidebar()"></div>
+
+  <main class="admin-main">
+    <header class="admin-header">
+      <button class="menu-btn" (click)="toggleSidebar()">☰</button>
+      <h1>Salon Admin Panel</h1>
+      <div class="header-actions">
+        <span class="user-info">Admin User</span>
+      </div>
+    </header>
+    <div class="admin-content">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,24 @@
+<div class="admin-settings-container">
+  <form [formGroup]="settingsForm" (ngSubmit)="onSubmit()" class="admin-settings-form">
+    <h2>Master Settings</h2>
+    <div class="form-group">
+      <label for="salonName">Salon Name</label>
+      <input id="salonName" formControlName="salonName" type="text" />
+    </div>
+    <div class="form-group">
+      <label for="address">Address</label>
+      <input id="address" formControlName="address" type="text" />
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      <input id="phone" formControlName="phone" type="text" />
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" formControlName="email" type="email" />
+    </div>
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+    <div *ngIf="success" class="success-message">Settings saved successfully!</div>
+    <button type="submit">Save Settings</button>
+  </form>
+</div>

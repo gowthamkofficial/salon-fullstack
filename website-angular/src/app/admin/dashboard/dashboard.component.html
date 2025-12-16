@@ -1,0 +1,10 @@
+<div class="admin-dashboard-container">
+  <h2>Admin Dashboard</h2>
+  <div class="metrics-grid">
+    <div class="metric-card" *ngFor="let metric of metrics">
+      <span class="material-icons metric-icon">{{ metric.icon }}</span>
+      <div class="metric-label">{{ metric.label }}</div>
+      <div class="metric-value">{{ metric.value }}</div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+.admin-expense-container {
+  padding: 2rem 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.expense-table-wrapper {
+  overflow-x: auto;
+}
+.expense-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+}
+.expense-table th, .expense-table td {
+  padding: 0.75rem 0.5rem;
+  text-align: left;
+}
+.expense-table th {
+  background: #f1f5f9;
+}
+@media (max-width: 700px) {
+  .admin-expense-container {
+    padding: 1rem 0.25rem;
+  }
+  .expense-table th, .expense-table td {
+    padding: 0.5rem 0.25rem;
+  }
+}

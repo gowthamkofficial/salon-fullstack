@@ -1,0 +1,55 @@
+<div class="admin-staff-container">
+  <h2>Manage Staff</h2>
+  <form [formGroup]="staffForm" (ngSubmit)="addOrUpdateStaff()" class="admin-staff-form">
+    <div class="form-row">
+      <input formControlName="name" placeholder="Staff Name" />
+      <input formControlName="role" placeholder="Role" />
+      <input formControlName="phone" placeholder="Phone" />
+      <select formControlName="status">
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+      <button type="submit">{{ editingId !== null ? 'Update' : 'Add' }}</button>
+      <button type="button" *ngIf="editingId !== null" (click)="cancelEdit()">Cancel</button>
+    </div>
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+    <div *ngIf="success" class="success-message">{{ success }}</div>
+  </form>
+
+  <div class="search-section">
+    <input [(ngModel)]="searchTerm" type="text" placeholder="Search staff..." class="search-input" />
+  </div>
+
+  <div class="staff-table-wrapper">
+    <table class="staff-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Phone</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of filteredStaff">
+          <td>{{ s.name }}</td>
+          <td>{{ s.role }}</td>
+          <td>{{ s.phone }}</td>
+          <td>
+            <span [ngClass]="{'active-status': s.status === 'active', 'inactive-status': s.status === 'inactive'}">
+              {{ s.status }}
+            </span>
+          </td>
+          <td>
+            <button (click)="editStaff(s)">Edit</button>
+            <button (click)="deleteStaff(s.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="filteredStaff.length === 0" class="empty-state">
+      <p>No staff found</p>
+    </div>
+  </div>
+</div>

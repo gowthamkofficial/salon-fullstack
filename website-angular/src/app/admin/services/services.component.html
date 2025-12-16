@@ -1,0 +1,55 @@
+<div class="admin-services-container">
+  <h2>Manage Services</h2>
+  <form [formGroup]="serviceForm" (ngSubmit)="addOrUpdateService()" class="admin-services-form">
+    <div class="form-row">
+      <input formControlName="name" placeholder="Service Name" />
+      <input formControlName="price" type="number" placeholder="Price" />
+      <input formControlName="duration" type="number" placeholder="Duration (min)" />
+      <select formControlName="status">
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+      <button type="submit">{{ editingId !== null ? 'Update' : 'Add' }}</button>
+      <button type="button" *ngIf="editingId !== null" (click)="cancelEdit()">Cancel</button>
+    </div>
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+    <div *ngIf="success" class="success-message">{{ success }}</div>
+  </form>
+
+  <div class="search-section">
+    <input [(ngModel)]="searchTerm" type="text" placeholder="Search services..." class="search-input" />
+  </div>
+
+  <div class="services-table-wrapper">
+    <table class="services-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Duration</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let service of filteredServices">
+          <td>{{ service.name }}</td>
+          <td>{{ service.price | currency }}</td>
+          <td>{{ service.duration }} min</td>
+          <td>
+            <span [ngClass]="{'active-status': service.status === 'active', 'inactive-status': service.status === 'inactive'}">
+              {{ service.status }}
+            </span>
+          </td>
+          <td>
+            <button (click)="editService(service)">Edit</button>
+            <button (click)="deleteService(service.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="filteredServices.length === 0" class="empty-state">
+      <p>No services found</p>
+    </div>
+  </div>
+</div>

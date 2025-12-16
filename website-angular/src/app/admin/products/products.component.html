@@ -1,0 +1,55 @@
+<div class="admin-products-container">
+  <h2>Manage Products</h2>
+  <form [formGroup]="productForm" (ngSubmit)="addOrUpdateProduct()" class="admin-products-form">
+    <div class="form-row">
+      <input formControlName="name" placeholder="Product Name" />
+      <input formControlName="price" type="number" placeholder="Price" />
+      <input formControlName="stock" type="number" placeholder="Stock" />
+      <select formControlName="status">
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+      <button type="submit">{{ editingId !== null ? 'Update' : 'Add' }}</button>
+      <button type="button" *ngIf="editingId !== null" (click)="cancelEdit()">Cancel</button>
+    </div>
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+    <div *ngIf="success" class="success-message">{{ success }}</div>
+  </form>
+
+  <div class="search-section">
+    <input [(ngModel)]="searchTerm" type="text" placeholder="Search products..." class="search-input" />
+  </div>
+
+  <div class="products-table-wrapper">
+    <table class="products-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of filteredProducts">
+          <td>{{ product.name }}</td>
+          <td>{{ product.price | currency }}</td>
+          <td>{{ product.stock }}</td>
+          <td>
+            <span [ngClass]="{'active-status': product.status === 'active', 'inactive-status': product.status === 'inactive'}">
+              {{ product.status }}
+            </span>
+          </td>
+          <td>
+            <button (click)="editProduct(product)">Edit</button>
+            <button (click)="deleteProduct(product.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="filteredProducts.length === 0" class="empty-state">
+      <p>No products found</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div class="admin-appointments-container">
+  <h2>Manage Appointments</h2>
+  <form [formGroup]="appointmentForm" (ngSubmit)="addOrUpdateAppointment()" class="admin-appointments-form">
+    <div class="form-row">
+      <input formControlName="client" placeholder="Client Name" />
+      <input formControlName="service" placeholder="Service" />
+      <input formControlName="staff" placeholder="Staff" />
+      <input formControlName="date" type="date" />
+      <input formControlName="time" type="time" />
+      <select formControlName="status">
+        <option value="pending">Pending</option>
+        <option value="confirmed">Confirmed</option>
+        <option value="completed">Completed</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+      <button type="submit">{{ editingId !== null ? 'Update' : 'Add' }}</button>
+      <button type="button" *ngIf="editingId !== null" (click)="cancelEdit()">Cancel</button>
+    </div>
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+    <div *ngIf="success" class="success-message">{{ success }}</div>
+  </form>
+
+  <div class="search-section">
+    <input [(ngModel)]="searchTerm" type="text" placeholder="Search by client or service..." class="search-input" />
+  </div>
+
+  <div class="appointments-table-wrapper">
+    <table class="appointments-table">
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Service</th>
+          <th>Staff</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of filteredAppointments">
+          <td>{{ a.client }}</td>
+          <td>{{ a.service }}</td>
+          <td>{{ a.staff }}</td>
+          <td>{{ a.date }}</td>
+          <td>{{ a.time }}</td>
+          <td>
+            <span [ngClass]="{
+              'pending-status': a.status === 'pending',
+              'confirmed-status': a.status === 'confirmed',
+              'completed-status': a.status === 'completed',
+              'cancelled-status': a.status === 'cancelled'
+            }">
+              {{ a.status }}
+            </span>
+          </td>
+          <td>
+            <button (click)="editAppointment(a)">Edit</button>
+            <button (click)="deleteAppointment(a.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="filteredAppointments.length === 0" class="empty-state">
+      <p>No appointments found</p>
+    </div>
+  </div>
+</div>
